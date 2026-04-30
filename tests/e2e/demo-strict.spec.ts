@@ -31,7 +31,9 @@ test("démo des options strictes", async ({ page }) => {
   // Erreur 5 — accès tableau sans vérif → noUncheckedIndexedAccess
   const products = await page.getByTestId("product-wrapper").all();
   const firstProduct = products[0];
-  const firstProductName = firstProduct ? await firstProduct.textContent() : null;
+  const firstProductName = firstProduct
+    ? await firstProduct.textContent()
+    : null;
   //  products[0] peut être undefined si la page n'a pas chargé
 
   // Usage des fonctions définies plus haut

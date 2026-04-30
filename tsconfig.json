@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "module": "ESNext",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./",
+    "lib": ["ES2022", "DOM"],
+    "types": ["node"],
     "paths": {
-      "@pages/*": ["tests/pages/*"],
-      "@fixtures/*": ["tests/fixtures/*"],
-      "@utils/*": ["utils/*"]
+      "@pages/*": ["./tests/pages/*"],
+      "@fixtures/*": ["./tests/fixtures/*"],
+      "@utils/*": ["./utils/*"]
     },
 
     "strict": true,

@@ -1,6 +1,7 @@
 import { expect, Locator, Page } from "playwright/test";
+import { BasePage } from "./BasePage";
 
-export class StorePage {
+export class StorePage extends BasePage {
   // === Couche 1 : LOCATORS PRIVÉS (à venir) ===
   private readonly heading: Locator;
   private readonly productWrappers: Locator;
@@ -13,6 +14,7 @@ export class StorePage {
   // }
 
   constructor(public readonly page: Page) {
+    super(page);
     this.heading = page.getByRole("heading", { name: /Tous les produits/i });
     this.productWrappers = page.getByTestId("product-wrapper");
     this.productPrices = page.getByTestId("price");
@@ -22,12 +24,19 @@ export class StorePage {
   // === Couche 2 : NAVIGATION (à venir) ===
   async goto(): Promise<void> {
     await this.page.goto("/fr/store");
-    await expect(this.heading).toBeVisible();
+    await this.attendPageToBeVisible();
+    await this.expectUrlEqual("/fr/store");
+    await this.expectTitleTobeViisible();
+  }
+
+  isOnStorePage(): boolean {
+    return this.ActualUrl().includes("/fr/store");
   }
 
   // === Couche 3 : ACTIONS (à venir) ===
   async clickOnFirstProduct(): Promise<void> {
     await this.productWrappers.first().click();
+    await this.page.waitForURL(/\/fr\/products\/[a-z0-9-]+/);
   }
 
   async getFirstProductPrice(): Promise<number> {

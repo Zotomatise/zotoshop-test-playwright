@@ -1,23 +1,20 @@
-import { StorePage } from "@pages/StorePage";
-import test, { expect } from "playwright/test";
+import { test, expect } from "../fixtures/page.fixture";
 
 test.describe("Store page - POM", () => {
-  test("le store affiche au moins un produit", async ({ page }) => {
-    const storePage = new StorePage(page);
+  test("le store affiche au moins un produit", async ({ storePage }) => {
     await storePage.goto();
     await storePage.expectOneProductIsVisible();
   });
 
-  test("le premier produit a un prix positif", async ({ page }) => {
-    const storePage = new StorePage(page);
+  test("le premier produit a un prix positif", async ({ storePage }) => {
     await storePage.goto();
     await storePage.expectPositivePrice();
   });
 
-  test.only("cliquer sur un produit ouvre la page produit", async ({
+  test("cliquer sur un produit ouvre la page produit", async ({
+    storePage,
     page,
   }) => {
-    const storePage = new StorePage(page);
     await storePage.goto();
     await storePage.clickOnFirstProduct();
     expect(storePage.isOnStorePage()).toBe(false);
@@ -26,10 +23,26 @@ test.describe("Store page - POM", () => {
     // Assertions à faire sur la page produit (à implémenter dans ProductPage)
   });
 
-  test("on est bien sur la page store", async ({ page }) => {
-    const storePage = new StorePage(page);
+  test("on est bien sur la page store", async ({ storePage }) => {
     await storePage.goto();
     const isOnStorePage = storePage.isOnStorePage();
     expect(isOnStorePage).toBe(true);
+  });
+
+  test("le store affiche au moins un produit avec un prix positif", async ({
+    storePage,
+  }) => {
+    await storePage.goto();
+    await storePage.expectOneProductIsVisible();
+    await storePage.expectPositivePrice();
+  });
+
+  test("le store affiche au moin 3 produits", async ({ storePage, page }) => {
+    await storePage.goto();
+    await storePage.expectOneProductIsVisible();
+
+    const productWrappers = page.getByTestId("product-wrapper");
+    const productCount = await productWrappers.count();
+    expect(productCount).toBeGreaterThanOrEqual(3);
   });
 });
